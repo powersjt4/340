@@ -1,0 +1,68 @@
+body{
+    background-color: #efe7da;
+
+}
+
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6, ul, p {
+	color: #0e4749;
+}
+
+nav img {
+    position: absolute;
+    top: 1px;
+    padding-left: 30px;
+}
+
+.navbar-inverse {
+    background: none;
+    border: none;
+    border-bottom: 1px solid #0e4749;
+    border-radius: 0px;
+    padding: 40px 130px;
+    margin:20px;
+}
+button, input, select, textarea {
+    margin: 10px;
+ }
+  .carousel-inner > .item > img,
+  .carousel-inner > .item > a > img {
+      width: 70%;
+      margin: auto;
+      opacity: 0.5;
+  }
+/*About Us hours Page*/
+
+#about_box{
+	overflow:scroll; 
+	height:300px;
+	width: 50%;
+    margin: auto;
+}
+/*Menus*/
+ul.menuItem {
+    list-style: none;
+}
+
+h1 a {
+    font-size: medium;
+    margin-left: 10em;
+}
+
+
+*/
+h1 span {
+    font-size: medium;
+    padding: 1px 70px;
+}
+
+/*Footer*/
+footer.footer {
+    margin: 20px;
+    border-top: 1px solid #0e4749;
+    padding: 10px;
+}
+
+footer span a img {
+    vertical-align: middle;
+    margin: 0px 15px;
+}

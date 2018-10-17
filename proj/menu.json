@@ -1,0 +1,44 @@
+{
+	"lunch":
+				[
+					{ 
+						"name": "Monte Cristo",
+						"description": "A really strange sandwich but very satisfying",
+						"price":"$00.95"
+					},
+					{ 
+						"name": "Hoagies & grinders",
+						"description": "Navy beans, navy beans, navy beans\nHoagies & grinders, hoagies & grinders",
+						"price":"$10.95" 
+					},
+					{ 
+						"name": "Meatloaf sandwich",
+						"description": "Navy beans, navy beans, navy beans\n",
+						"price":"$20.95" 
+					},
+					{
+						"name": "Sloppy Joes",
+						"description": "Slop..sloppy joes",
+						"price": "$36.95" 
+					}
+				],
+
+	"dinner":
+		[
+			{ 
+					"name": "Haddock Fritters",
+					"description": "Crispy fried haddock fritters",
+					"price":"$14.95" 
+			},
+			{ 		
+					"name": "Baked Meatloaf",
+					"description": "Meat loaf baked house herbs two sides and gravy",
+					"price": "$12.95" 
+			},
+			{ 		"name": "Scallops in Cream Sauce",
+					"description": "Fresh baked bay scallops in cream sauce",
+					"price": "$16.95" 
+			}
+			
+		]
+}

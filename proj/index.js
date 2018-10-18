@@ -19,40 +19,24 @@ app.get('/',function(req,res){
   res.render('home');
 });
 
-app.get('/about',function(req,res){
-  res.render('about');
+app.get('/additems',function(req,res){
+  res.render('additems');
 });
 
-app.get('/location',function(req,res){
-  res.render('location');
+app.get('/menumealpi',function(req,res){
+  res.render('addmenumealpi');
+});
+
+app.get('/additemstomenu',function(req,res){
+  res.render('additemstomenu');
+});
+
+app.get('/viewdb',function(req,res){
+  res.render('viewdb');
 });
 
 app.get('/',function(req,res){
 	res.render('home');
-});
-
-/*Menu */
-menuData = require('./menu.json'); 
-
-app.get('/menus/:index',function(req,res,next){
-  var index = req.params.index; 
-
-  var menuList = menuData[index];   
-  if(menuList){
-    var context={
-       object: menuList
-           }
-   res.render(index, context);        
-  }else{
-    console.log("Error reading JSON file.");
-  }
-});
-
-/*Download menus*/
-app.get('/download/:index', function (req, res) {
-    var index = req.params.index; 
-     var filePath = "./views/menus/download/"+index;
-     res.download(filePath);
 });
 
 /*Error renders*/

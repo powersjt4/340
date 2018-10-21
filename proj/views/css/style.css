@@ -34,7 +34,7 @@ button, input, select, textarea {
 
 #about_box{
 	overflow:scroll; 
-	height:300px;
+/*	height:300px;*/
 	width: 50%;
     margin: auto;
 }

@@ -1,4 +1,5 @@
 var express = require('express');
+var mysql = require('./dbcon.js');
 
 var app = express();
 var handlebars = require('express-handlebars').create({defaultLayout:'main'});
@@ -23,8 +24,8 @@ app.get('/additems',function(req,res){
   res.render('additems');
 });
 
-app.get('/menumealpi',function(req,res){
-  res.render('addmenumealpi');
+app.get('/addmenus',function(req,res){
+  res.render('addmenus');
 });
 
 app.get('/additemstomenu',function(req,res){

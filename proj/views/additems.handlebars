@@ -3,4 +3,39 @@
 	<p>
 		You can add things to the database here:<br>
 	</p>
+	<form method = "POST">
+    	<legend>Add Item:</legend>
+    		<label>Name: </label>
+		 	<input type="text" name = "itemName" id = "name_frm" value=""><br>
+
+    		<label>price:</label>
+		 	<input type="number" step = "0.01" min = 0 name = "price" id = "price_frm" value = ""><br>
+
+		 	<label>Description:</label>
+		 	<input type="text" name = "desc" id = "desc_frm" value = ""><br>
+		 	
+		 	<label>Meal Type:</label>
+		 	<input type="text" name = "mealType" id = "item_meal_frm" value = ""><br>		 	
+	    
+	    <input type="submit" id ="submitItem" Value= "Submit Item" />
+	    <input type="submit" id ="editItem" Value = "Edit Item" />
+	  <!--  <input type="submit" id ="editItem" class ="hide" Value = "Edit Item" /> -->
+	</form>
+
+<h1>Item Results:</h1>
+<div id = "newItems">
+<table id="table">
+  <tr>
+    <th>Name</th>
+    <th>Price</th> 
+    <th>Description</th>
+    <th>Meal Type</th>
+    <th>Primary Ingredient</th>
+  </tr>
+</table>
+
+</div>
+</main>
+</div>
+
 </div>

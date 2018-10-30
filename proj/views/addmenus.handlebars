@@ -6,8 +6,6 @@
 		<div>
 		<form method = "post">
     	<legend>Add Menu: </legend>
-    		<label>Name: </label>
-		 	<input type="text" name = "menuname" id = "menu_name_frm" value=""><br>
 
 		 	<label>Restaurant Name: </label>
 		 	<input type="text" name = "restaurant" id = "rest_frm" value = ""><br>
@@ -22,14 +20,24 @@
 		</div>
 	<h1>Menu Results:</h1>
 		<div id = "newItems">
-		<table id="table">
-		  <tr>
-		    <th>Name</th>
-		    <th>Restaurant Name</th> 
-		    <th>Meal Type</th>
-		  </tr>
-		</table>
-
+			<table id="table">
+			  <thead>
+			  	<tr>
+			    	<th>Restaurant Name</th> 
+			    	<th>Meal Type</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			  	<tr><td>Murphy's</td> <td>Lunch</td> <td><input id="edit" type="submit" name="edit" value="Edit" /></td> <td><input id="delete" type="submit" name="del" value="Delete"</td>
+			  	</tr>
+			  	<tr><td>Murphy's</td>  <td>Dinner</td> <td><input id="edit" type="submit" name="edit" value="Edit" /></td> <td><input id="delete" type="submit" name="del" value="Delete"</td>
+			  	</tr>
+			  	<tr><td>Dots Diner</td> <td>Breakfast</td> <td><input id="edit" type="submit" name="edit" value="Edit" /></td> <td><input id="delete" type="submit" name="del" value="Delete"</td>
+			  	</tr>
+			  	<tr><td>Dots Diner</td> <td>Lunch</td> <td><input id="edit" type="submit" name="edit" value="Edit" /></td> <td><input id="delete" type="submit" name="del" value="Delete"</td>
+			  	</tr>
+			  </tbody>
+			</table>
 		</div>
 		</main>
 		</div>

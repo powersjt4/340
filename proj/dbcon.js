@@ -4,7 +4,7 @@ var pool = mysql.createPool({
   host            : 'localhost',
   user            : 'root',
   password        : 'asdf',
-  database        : 'test'
+  database        : 'cs340_powersj2'
 });
 
 module.exports.pool = pool;

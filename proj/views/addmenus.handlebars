@@ -2,6 +2,7 @@
 	<h2>Add to Menus</h2>
 	<p>
 		this page will allow you to add to the menus, meals and primary ingredient databases.<br>
+		<input type="submit" id ="RefreshMenuDB" value= "Refresh DB"/>
 	</p>
 		<div>
 		<form method = "post">
@@ -11,7 +12,7 @@
 		 	<input type="text" name = "restaurant" id = "rest_frm" value = ""><br>
 		 	
 		 	<label>Meal Type: </label>
-		 	<input type="text" name = "mealtype" id = "menumt_frm" value = ""><br>		 	
+		 	<input type="number" name = "mealtype" id = "menumt_frm" value = ""><br>		 	
 	    
 	    <input type="submit" id ="submitMenu" value= "Submit Menu" />
 	    <input type="submit" id ="editmenu" value = "Edit Menu" />
@@ -28,14 +29,7 @@
 			    </tr>
 			  </thead>
 			  <tbody>
-			  	<tr><td>Murphy's</td> <td>Lunch</td> <td><input id="edit" type="submit" name="edit" value="Edit" /></td> <td><input id="delete" type="submit" name="del" value="Delete"</td>
-			  	</tr>
-			  	<tr><td>Murphy's</td>  <td>Dinner</td> <td><input id="edit" type="submit" name="edit" value="Edit" /></td> <td><input id="delete" type="submit" name="del" value="Delete"</td>
-			  	</tr>
-			  	<tr><td>Dots Diner</td> <td>Breakfast</td> <td><input id="edit" type="submit" name="edit" value="Edit" /></td> <td><input id="delete" type="submit" name="del" value="Delete"</td>
-			  	</tr>
-			  	<tr><td>Dots Diner</td> <td>Lunch</td> <td><input id="edit" type="submit" name="edit" value="Edit" /></td> <td><input id="delete" type="submit" name="del" value="Delete"</td>
-			  	</tr>
+
 			  </tbody>
 			</table>
 		</div>

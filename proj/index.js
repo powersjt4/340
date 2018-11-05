@@ -18,27 +18,41 @@ app.get('/',function(req,res){
   res.render('home');
 });
 
-app.get('/additems',function(req,res){
-  res.render('additems');
-});
-
 app.get('/addmenus',function(req,res){
-  mysql.pool.query("DROP TABLE IF EXISTS `menu`;");
-  mysql.pool.query("CREATE TABLE `menu` (`id` int(11) NOT NULL AUTO_INCREMENT,`restaurant_name` varchar(255) NOT NULL, `menu_meal` int(11) NOT NULL, PRIMARY KEY (`id`), KEY `menu_meal` (`menu_meal`), CONSTRAINT `menu_ibfk_1` FOREIGN KEY (`menu_meal`) REFERENCES `meal` (`id`) ON DELETE CASCADE ON UPDATE CASCADE) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;");
   res.render('addmenus');
 });
+
+app.get('/getMenuDB',function(req,res,next){
+  var context = {};
+  mysql.pool.query('SELECT * FROM menu', function(err, rows, fields){
+    if(err){
+      next(err);
+      return;
+    }
+    context = rows;
+    res.send(context);
+  });
+});
+
+
 
 app.post('/insertmenu', function(req,res){
 var context = {};
 var postData = req.body;
-  mysql.pool.query("INSERT INTO workouts(`name`,`reps`,`weight`,`date`,`lbs`) VALUES (?,?,?,?,?)", [postData.name, postData.reps, postData.weight, postData.date, postData.lbs], function(err, result,next){
+console.log(postData);
+mysql.pool.query("INSERT INTO menu(`restaurant_name`,`menu_meal`) VALUES (?,?)", [postData.rName, postData.mealType], function(err, result,next){
     if(err){
-      return;
+     console.log("Error Adding to menu table" + postData);
+     return;
     }
   postData.id = result.insertId;//Need to get ID from last insert
-  //console.log(postData);
+  console.log(postData);
   res.send(postData);
   });
+});
+
+app.get('/additems',function(req,res){
+  res.render('additems');
 });
 
 app.get('/additemstomenu',function(req,res){

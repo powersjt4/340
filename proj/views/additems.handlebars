@@ -15,9 +15,12 @@
 		 	<input type="text" name = "desc" id = "desc_frm" value = ""><br>
 		 	
 		 	<label>Meal Type:</label>
-		 	<input type="text" name = "mealType" id = "item_meal_frm" value = ""><br>		 	
+		 	<input "number" name = "mealType" min = 0 id = "item_meal_frm" value = ""><br>		 	
+
+		 	<label>Primary Ingredient:</label>
+		 	<input type="number" name = "pi" min = 0 id = "pi_frm" value = ""><br>	    
 	    
-	    <input type="submit" id ="submitItem" Value= "Submit Item" />
+		<input type="submit" id ="submitItem" Value= "Submit Item" />
 	    <input type="submit" id ="editItem" Value = "Edit Item" />
 	  <!--  <input type="submit" id ="editItem" class ="hide" Value = "Edit Item" /> -->
 	</form>
@@ -35,21 +38,11 @@
     </tr>
   </thead>
   <tbody>
-  	<tr><td>Steak</td> <td>16.99</td> <td>Its a steak.</td> <td>Dinner</td> <td>Cow</td> <td><input id="edit" type="submit" name="edit" value="Edit" /></td> <td><input id="delete" type="submit" name="del" value="Delete"</td>
-  	</tr>
-  	<tr><td>Pasta</td> <td>12.99</td> <td>Its just some pasta</td> <td>Dinner</td> <td>Pasta</td> <td><input id="edit" type="submit" name="edit" value="Edit" /></td> <td><input id="delete" type="submit" name="del" value="Delete"</td>
-  	</tr>
-  	<tr><td>Pancakes</td> <td>6.00</td> <td>Everyone loves pancakes.</td> <td>Breakfast</td> <td>Flour</td> <td><input id="edit" type="submit" name="edit" value="Edit" /></td> <td><input id="delete" type="submit" name="del" value="Delete"</td>
-  	</tr>
-  	<tr><td>Monte Cristo</td> <td>8.99</td> <td>A strange yet delicious sandwich.</td> <td>Brunch</td> <td>Ham</td> <td><input id="edit" type="submit" name="edit" value="Edit" /></td> <td><input id="delete" type="submit" name="del" value="Delete"</td>
-  	</tr>
-  	<tr><td>Monte Cristo</td> <td>9.99</td> <td>A strange yet delicious sandwich.</td> <td>Lunch</td> <td>Ham</td> <td><input id="edit" type="submit" name="edit" value="Edit" /></td> <td><input id="delete" type="submit" name="del" value="Delete"</td>
-  	</tr>
   </tbody>
 </table>
-
 </div>
 </main>
 </div>
-
 </div>
+
+<script src="/js/addItemScript.js"></script>

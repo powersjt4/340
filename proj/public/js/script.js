@@ -34,7 +34,7 @@ function getMenuDB(){
 			return;
 		}
 		data.mealType = document.getElementById('menumt_frm').value;//html forms
-		req.open('POST','/insertmenu', true);
+		req.open('POST','/insertItem', true);
 		console.log("Post Data: " + JSON.stringify(data)); 
 		
    		req.setRequestHeader('Content-Type', 'application/json');

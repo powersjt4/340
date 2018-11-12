@@ -40,16 +40,23 @@ app.post('/insertmenu', function(req,res){
 var context = {};
 var postData = req.body;
 console.log(postData);
-mysql.pool.query("INSERT INTO menu(`restaurant_name`,`menu_meal`) VALUES (?,?)", [postData.restaurant_name, postData.menu_meal], function(err, result,next){
-    if(err){
-     console.log("Error Adding to menu table" + postData);
-     return;
-    }
-  postData.id = result.insertId;//Need to get ID from last insert
-  console.log(postData);
-  res.send(postData);
-  });
-});
+    mysql.pool.query("INSERT INTO meal(`name`) VALUES (?) ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id)",[postData.menu_meal], function(err, result,next){
+         if(err){
+         console.log("Error Adding to meal type table" + JSON.stringify(postData));
+         return;
+        } 
+        postData.menu_meal = result.insertId; // Sets menu_meal to LAST_INSET_ID
+        mysql.pool.query("INSERT INTO menu(`restaurant_name`,`menu_meal`) VALUES (?,?)", [postData.restaurant_name, postData.menu_meal], function(err, result,next){
+            if(err){
+             console.log("Error Adding to menu table" + JSON.stringify(postData));
+             return;
+            }
+          postData.id = result.insertId;//Need to get ID from last insert
+          console.log(JSON.stringify(postData));
+          res.send(postData);
+        });
+    });
+});///insertmenu
 
 app.get('/deleteMenu/:id',function(req,res,next){
   var context = {};

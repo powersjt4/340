@@ -103,3 +103,44 @@ function deleteMenu(){
 		req.send();
 }
 
+/*
+* Probably not the cleanest implement of the update
+* but it works refreshes the page after recieving response.
+*/
+function editItem(){
+		var id = this.id;
+		var req = new XMLHttpRequest();
+		req.open('GET','/select?id='+this.id, true);
+		req.addEventListener('load',function(){
+			if(req.status >= 200 && req.status<400){
+				var response = JSON.parse(req.responseText);	
+				response[0].date = response[0].date.slice(0, -14);
+				document.getElementById("rest_frm").value = response[0].name;
+				document.getElementById("menumt_frm").value = response[0].reps;
+
+					document.getElementById("submitMenu").style.display="none";
+					document.getElementById("editMenu").style.display = "block";	
+					document.getElementById('editMenu').addEventListener('click',function(event){
+						var req = new XMLHttpRequest();
+						var data = {rName: null, mealType: null};
+						data.rName= document.getElementById('rest_frm').value;
+						data.mealType = document.getElementById('menumt_frm').value;
+						data.id = id;
+							if(data != "")
+							req.open('POST','/updateMenu', true);
+   						req.setRequestHeader('Content-Type', 'application/json');
+						req.addEventListener('load',function(){
+						if(req.status >= 200 && req.status<400){
+							location.reload();
+						}else{	
+							console.log("Error in network request: " + req.statusText); 
+		  				}});//end of ael(load)
+    					req.send(JSON.stringify(data));
+						event.preventDefault();
+				});				
+		}else{	
+			console.log("Error in network request: " + request.statusText); 
+		}});//end of ael(load)
+		req.send();
+
+}

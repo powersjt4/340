@@ -35,7 +35,6 @@ app.get('/getMenuDB',function(req,res,next){
   });
 });
 
-
 app.post('/insertmenu', function(req,res){
 var context = {};
 var postData = req.body;
@@ -68,6 +67,41 @@ app.get('/deleteMenu/:id',function(req,res,next){
     context.results;
     res.send(context);
   });
+});
+
+app.get('/selectMenu',function(req,res,next){
+  var context = {};
+  mysql.pool.query("SELECT * FROM workouts WHERE id=?", [req.query.id], function(err, result){
+    if(err){
+      next(err);
+      return;
+    }
+  context = result;
+  res.send(context);
+  });
+});
+
+app.post('/updateMenu', function(req,res,next){
+  var postData = req.body;
+
+  mysql.pool.query("SELECT * FROM workouts WHERE id=?", [postData.id], function(err, result){
+    if(err){
+      next(err);
+      return;
+    }
+//  if(result.length == 1){
+      var curVals = result[0];
+    mysql.pool.query("UPDATE workouts SET name=?, reps =?, weight=?, date=?,lbs=?WHERE id=? ",
+        [postData.rName || curVals.name, postData.reps || curVals.reps, postData.weight || curVals.weight,postData.date ||curVals.date, postData.lbs || curVals.lbs, postData.id],
+        function(err, result){
+        if(err){
+          return;
+        }
+        results = "Updated " + result.changedRows + " rows.";
+        res.send(results);
+      });
+//  }
+   });
 });
 
 
@@ -103,10 +137,25 @@ mysql.pool.query("INSERT INTO item(`name`,`description`,`price`,`item_meal`,`pri
   });
 });
 
+app.get('/deleteItem/:id',function(req,res,next){
+  var context = {};
+  mysql.pool.query("DELETE FROM item WHERE id=?", [req.params.id], function(err, result){
+    if(err){
+      next(err);
+      return;
+    }
+    context.results;
+    res.send(context);
+  });
+});
+
 /*///Additemstomenu///*/
 app.get('/additemstomenu',function(req,res){
   res.render('additemstomenu');
 });
+
+
+
 
 app.get('/viewdb',function(req,res){
   res.render('viewdb');

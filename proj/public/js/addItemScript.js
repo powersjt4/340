@@ -99,7 +99,22 @@ function addToList(newItem){
 		editCell.appendChild(editBtn);
 		row.appendChild(editCell);
 		document.getElementById("table").appendChild(row);
-//		delBtn.addEventListener("click", deleteItem); 
+		delBtn.addEventListener("click", deleteItem); 
 //		editBtn.addEventListener("click",editItem); 
+}
+
+/*
+* Deletes row from the table
+*  after deleting it from the database.
+*/
+function deleteItem(){
+	document.getElementById("table").deleteRow(this.parentNode.parentNode.rowIndex);
+		var req = new XMLHttpRequest();
+		req.open('GET','/deleteItem/'+this.id, true);
+		if(req.status >= 200 && req.status<400){
+				document.getElementById("table").deleteRow(this.parentNode.parentNode.rowIndex);
+		}
+
+		req.send();
 }
 

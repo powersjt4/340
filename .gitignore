@@ -1,2 +1,4 @@
 
 proj/node_modules/array-unique/index.js
+*.zip
+*.pdf

@@ -26,9 +26,9 @@ function getMenuDB(){
 */
 	document.getElementById('submitMenu').addEventListener('click',function(event){
 		var req = new XMLHttpRequest();
-		var data = {rName: null, mealType: null};
+		var data = {restaurant_name: null, menu_meal: null};
 		data.restaurant_name= document.getElementById('rest_frm').value;//Get data from
-		if(data.rName == ""){
+		if(data.restaurant_name== ""){
 			alert("Missing restaurant name Field");
 			event.preventDefault();
 			return;

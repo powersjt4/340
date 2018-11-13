@@ -3,11 +3,17 @@
 	<p>
 		You can add items to your menus here.
 	</p>
-	<h3>Select menu to add to</h3>
-	<select name = "menuSelect">
-	  <option value="Lunch">Lunch</option>
-	  <option value="Dinner">Dinner</option>
-	  <option value="Breakfast">Breakfast</option>
-	  <option value="Brunch">Brunch</option>
-	</select>
+<div>
+<h3> Select Restaurant Menu</h3>
+    <form id="restaurantSelect" action="/" method="post">
+    Restaurant: <select name='menu_id'>
+        {{#each restaurants}}
+          <option value='{{id}}'>{{restaurant_name}} - {{meal_name}}</option>
+        {{/each}}
+    </select>
+    <br>
+    <input type="submit" value="Submit">
+    </form>
+</div>
+
 </div>

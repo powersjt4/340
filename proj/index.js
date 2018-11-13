@@ -43,8 +43,10 @@ console.log(postData);
          if(err){
          console.log("Error Adding to meal type table" + JSON.stringify(postData));
          return;
-        } 
+        }
+		console.log(postData);
         postData.menu_meal = result.insertId; // Sets menu_meal to LAST_INSET_ID
+		console.log(postData);
         mysql.pool.query("INSERT INTO menu(`restaurant_name`,`menu_meal`) VALUES (?,?)", [postData.restaurant_name, postData.menu_meal], function(err, result,next){
             if(err){
              console.log("Error Adding to menu table" + JSON.stringify(postData));
@@ -126,15 +128,24 @@ app.post('/insertitem', function(req,res){
 var context = {};
 var postData = req.body;
 console.log(postData);
-mysql.pool.query("INSERT INTO item(`name`,`description`,`price`,`item_meal`,`primary_ingredient`) VALUES (?,?,?,?,?)", [postData.name, , postData.description, postData.price, postData.item_meal, postData.primary_ingredient], function(err, result,next){
-    if(err){
-     console.log("Error adding to item table" + postData);
-     return;
-    }
-  postData.id = result.insertId;//Need to get ID from last insert
-  console.log(postData);
-  res.send(postData);
-  });
+mysql.pool.query("INSERT INTO meal(`name`) VALUES (?) ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id)",[postData.item_meal], function(err, result,next){
+         if(err){
+         console.log("Error Adding to item meal type table" + JSON.stringify(postData));
+         return;
+        } 
+		console.log(postData);
+        postData.item_meal = result.insertId; // Sets itemu_meal to LAST_INSET_ID
+		console.log(postData);
+mysql.pool.query("INSERT INTO item(`name`,`description`,`price`,`item_meal`,`primary_ingredient`) VALUES (?,?,?,?,?)", [postData.name, postData.description, postData.price, postData.item_meal, postData.primary_ingredient], function(err, result,next){
+            if(err){
+             console.log("Error Adding to item table" + JSON.stringify(postData));
+             return;
+            }
+          postData.id = result.insertId;//Need to get ID from last insert
+          console.log(JSON.stringify(postData));
+          res.send(postData);
+        });
+    });
 });
 
 app.get('/deleteItem/:id',function(req,res,next){
@@ -150,12 +161,30 @@ app.get('/deleteItem/:id',function(req,res,next){
 });
 
 /*///Additemstomenu///*/
+
+/* get resaurant names to populate in dropdown */
+function getRestaurant(res, mysql, context, complete){
+	mysql.pool.query("SELECT menu.id, menu.restaurant_name, meal.name AS meal_name FROM menu INNER JOIN meal ON menu.menu_meal = meal.id ", function(error, results, fields){
+		if(error){
+			res.write(JSON.stringify(error));
+			res.end();
+		}
+		context.restaurants = results;
+		complete();
+	});
+}
+
 app.get('/additemstomenu',function(req,res){
-  res.render('additemstomenu');
+    var callbackCount = 0;
+    var context = {};
+    getRestaurant(res, mysql, context, complete);
+        function complete(){
+            callbackCount++;
+            if(callbackCount >= 1){
+				res.render('additemstomenu', context);
+            }
+		};
 });
-
-
-
 
 app.get('/viewdb',function(req,res){
   res.render('viewdb');

@@ -42,7 +42,7 @@ function getMenuDB(){
 			if(req.status >= 200 && req.status<400){
 				var response = JSON.parse(req.responseText);
 				if(response){
-					console.log("response " + JSON.stringify(response));
+					console.log("Response " + JSON.stringify(response));
 					addToList(response);
 				}
 			}else{	
@@ -62,10 +62,14 @@ function addToList(newMenu){
 		nameCell = document.createElement('td');
 		nameCell.innerHTML = newMenu.restaurant_name; 
 		row.appendChild(nameCell);
-		
-		repsCell = document.createElement('td');
-		repsCell.innerHTML = newMenu.menu_meal; 
-		row.appendChild(repsCell);
+			
+		menuMealCell = document.createElement('td');
+		if(newMenu.menu_mealString){
+			menuMealCell.innerHTML = newMenu.menu_mealString;
+		}else{
+			menuMealCell.innerHTML = newMenu.menu_meal; 
+		}
+		row.appendChild(menuMealCell);
 		
 		delCell = document.createElement('td');
 		var delBtn = document.createElement("BUTTON");     

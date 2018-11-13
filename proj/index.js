@@ -25,7 +25,7 @@ app.get('/addmenus',function(req,res){
 
 app.get('/getMenuDB',function(req,res,next){
   var context = {};
-  mysql.pool.query('SELECT * FROM menu', function(err, rows, fields){
+  mysql.pool.query('SELECT menu.restaurant_name, meal.name AS menu_meal FROM menu INNER JOIN meal ON menu.menu_meal = meal.id', function(err, rows, fields){
     if(err){
       next(err);
       return;
@@ -36,7 +36,6 @@ app.get('/getMenuDB',function(req,res,next){
 });
 
 app.post('/insertmenu', function(req,res){
-var context = {};
 var postData = req.body;
 console.log(postData);
     mysql.pool.query("INSERT INTO meal(`name`) VALUES (?) ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id)",[postData.menu_meal], function(err, result,next){
@@ -45,7 +44,8 @@ console.log(postData);
          return;
         }
 		console.log(postData);
-        postData.menu_meal = result.insertId; // Sets menu_meal to LAST_INSET_ID
+   		postData.menu_mealString = postData.menu_meal;//Preserves string name from user input
+	    postData.menu_meal = result.insertId; // Sets menu_meal to LAST_INSERT_ID for numeric input in to database
 		console.log(postData);
         mysql.pool.query("INSERT INTO menu(`restaurant_name`,`menu_meal`) VALUES (?,?)", [postData.restaurant_name, postData.menu_meal], function(err, result,next){
             if(err){

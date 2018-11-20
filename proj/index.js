@@ -11,8 +11,11 @@ app.use(bodyParser.json());
 app.engine('handlebars', handlebars.engine);
 app.use(express.static('public'));
 app.set('view engine', 'handlebars');
-app.set('port', 4576);
-
+if(process.argv[2]=== undefined){
+	app.set('port', 4576);
+} else {
+	app.set('port', process.argv[2]);
+}
 /*///Navigation///*/
 app.get('/',function(req,res){
   res.render('home');
@@ -34,7 +37,10 @@ app.get('/getMenuDB',function(req,res,next){
     res.send(context);
   });
 });
-
+/*Insert new menu checks to see if meal name alreadty exists if it doesn't it will add the name to the meal database,
+ *if not it will return the if of the unique meal id. menu_mealString is the string name entered by the user(meal.name)
+ *and menu meal is the id of the meal for entry into menu. 
+ */
 app.post('/insertmenu', function(req,res){
 var postData = req.body;
 console.log(postData);
@@ -136,7 +142,7 @@ mysql.pool.query("INSERT INTO meal(`name`) VALUES (?) ON DUPLICATE KEY UPDATE id
 		console.log(postData);
         postData.item_meal = result.insertId; // Sets itemu_meal to LAST_INSET_ID
 		console.log(postData);
-mysql.pool.query("INSERT INTO item(`name`,`description`,`price`,`item_meal`,`primary_ingredient`) VALUES (?,?,?,?,?)", [postData.name, postData.description, postData.price, postData.item_meal, postData.primary_ingredient], function(err, result,next){
+		mysql.pool.query("INSERT INTO item(`name`,`description`,`price`,`item_meal`,`primary_ingredient`) VALUES (?,?,?,?,?)", [postData.name, postData.description, postData.price, postData.item_meal, postData.primary_ingredient], function(err, result,next){
             if(err){
              console.log("Error Adding to item table" + JSON.stringify(postData));
              return;

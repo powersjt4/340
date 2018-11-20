@@ -2,3 +2,6 @@
 proj/node_modules/array-unique/index.js
 *.zip
 *.pdf
+proj/dbcon.js
+proj/node_modules
+proj/dbcon.js

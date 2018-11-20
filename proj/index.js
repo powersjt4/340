@@ -28,7 +28,7 @@ app.get('/addmenus',function(req,res){
 
 app.get('/getMenuDB',function(req,res,next){
   var context = {};
-  mysql.pool.query('SELECT menu.restaurant_name, meal.name AS menu_meal FROM menu INNER JOIN meal ON menu.menu_meal = meal.id', function(err, rows, fields){
+  mysql.pool.query('SELECT menu.id, menu.restaurant_name, meal.name AS menu_meal FROM menu INNER JOIN meal ON menu.menu_meal = meal.id', function(err, rows, fields){
     if(err){
       next(err);
       return;
@@ -67,6 +67,7 @@ console.log(postData);
 
 app.get('/deleteMenu/:id',function(req,res,next){
   var context = {};
+  console.log(JSON.stringify(req.params));
   mysql.pool.query("DELETE FROM menu WHERE id=?", [req.params.id], function(err, result){
     if(err){
       next(err);

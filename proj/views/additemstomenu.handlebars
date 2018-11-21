@@ -5,15 +5,16 @@
 	</p>
 <div>
 <h3> Select Restaurant Menu</h3>
-    <form id="restaurantSelect" action="/" method="post">
-    Restaurant: <select name='menu_id'>
+    <form id="restaurantSelect" method="get">
+    Restaurant: <select name='menu_id' id="menuSelectDropdown">
         {{#each restaurants}}
-          <option value='{{id}}'>{{restaurant_name}} - {{meal_name}}</option>
+          <option value='{{id}}'>{{id}}{{restaurant_name}} - {{meal_name}}</option>
         {{/each}}
     </select>
     <br>
-    <input type="submit" value="Submit">
+    <input type="submit" id ="restaurantMenuSelect" value="Submit">
     </form>
 </div>
 
 </div>
+<script src="/js/addItemsToMenu.js"></script>

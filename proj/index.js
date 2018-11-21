@@ -73,6 +73,7 @@ app.get('/deleteMenu/:id',function(req,res,next){
       next(err);
       return;
     }
+
     context.results;
     res.send(context);
   });
@@ -191,6 +192,24 @@ app.get('/additemstomenu',function(req,res){
 				res.render('additemstomenu', context);
             }
 		};
+});
+
+app.get('/getMenuItems/:id',function(req,res,next){
+  var context = {};
+  sql = "SELECT name, price, description, item_meal FROM menu_items mi INNER JOIN menu ON mi.mid = menu.id INNER JOIN item ON mi.iid = item.id WHERE mi.mid = ?";
+  var inserts = [req.params.id];
+
+  mysql.pool.query(sql, inserts, function(error, results, fields){
+    if(error){
+        res.write(JSON.stringify(error));
+        res.end()
+    }
+   context = results;
+   console.log("Got id in back in = " + req.params.id + " context = " + JSON.stringify(context));
+    res.send(context);
+
+  });
+
 });
 
 app.get('/viewdb',function(req,res){

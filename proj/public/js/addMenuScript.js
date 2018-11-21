@@ -74,7 +74,7 @@ function addToList(newMenu){
 		delCell = document.createElement('td');
 		var delBtn = document.createElement("BUTTON");     
 		var delTxt = document.createTextNode("del");       
-		delBtn.id =newMenu.id;
+		delBtn.id = newMenu.id;
 		delBtn.appendChild(delTxt); 
 		delCell.appendChild(delBtn);
 		row.appendChild(delCell);

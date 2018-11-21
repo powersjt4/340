@@ -5,3 +5,4 @@ proj/node_modules/array-unique/index.js
 proj/dbcon.js
 proj/node_modules
 proj/dbcon.js
+*.swp

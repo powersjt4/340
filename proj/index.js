@@ -207,9 +207,7 @@ app.get('/getMenuItems/:id',function(req,res,next){
    context = results;
    console.log("Got id in back in = " + req.params.id + " context = " + JSON.stringify(context));
     res.send(context);
-
   });
-
 });
 
 app.get('/viewdb',function(req,res){

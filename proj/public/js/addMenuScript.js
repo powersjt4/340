@@ -35,20 +35,17 @@ function getMenuDB(){
 		}
 		data.menu_meal= document.getElementById('menumt_frm').value;//html forms
 		req.open('POST','/insertmenu', true);
-		console.log("Post Data: " + JSON.stringify(data)); 
-		
-   		req.setRequestHeader('Content-Type', 'application/json');
+		req.setRequestHeader('Content-Type', 'application/json');
 		req.addEventListener('load',function(){
 			if(req.status >= 200 && req.status<400){
 				var response = JSON.parse(req.responseText);
 				if(response){
-					console.log("Response " + JSON.stringify(response));
 					addToList(response);
 				}
 			}else{	
 				console.log("Error in network request: " + req.statusText); 
 		  }});//end of ael(load)
-    	req.send(JSON.stringify(data));
+		req.send(JSON.stringify(data));
 		event.preventDefault();
 	});
 
@@ -57,7 +54,6 @@ function getMenuDB(){
 * Also implemented as a OL below
 */
 function addToList(newMenu){
-		console.log("newMenu = " + JSON.stringify(newMenu));
 		var row = document.createElement('tr');
 		nameCell = document.createElement('td');
 		nameCell.innerHTML = newMenu.restaurant_name; 

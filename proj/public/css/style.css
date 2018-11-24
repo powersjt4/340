@@ -30,7 +30,21 @@ button, input, select, textarea {
       margin: auto;
       opacity: 0.5;
   }
-/*About Us hours Page*/
+
+#menuItemsDisplay{
+    width: 100%;
+    margin: auto; 
+}
+
+#allItems{
+    width: 50%;
+    float: left;
+}
+
+#itemsHeader{
+    width: 50%;
+    float: left;
+}
 
 #about_box{
 	overflow:scroll; 
@@ -38,6 +52,14 @@ button, input, select, textarea {
 	width: 50%;
     margin: auto;
 }
+
+#addItemsToMenuMain{
+    overflow:scroll; 
+/*  height:300px;*/
+    width: 80%;
+    margin: auto;
+}
+
 /*Menus*/
 ul.menuItem {
     list-style: none;
@@ -70,3 +92,5 @@ footer span a img {
     vertical-align: middle;
     margin: 0px 15px;
 }
+
+

@@ -12,11 +12,11 @@ app.engine('handlebars', handlebars.engine);
 app.use(express.static('public'));
 app.set('view engine', 'handlebars');
 if(process.argv[2]=== undefined){
-	app.set('port', 4576);
+  app.set('port', 4576);
 } else {
-	app.set('port', process.argv[2]);
+  app.set('port', process.argv[2]);
 }
-/*///Navigation///*/
+/*Navigation*/
 app.get('/',function(req,res){
   res.render('home');
 });
@@ -43,23 +43,20 @@ app.get('/getMenuDB',function(req,res,next){
  */
 app.post('/insertmenu', function(req,res){
 var postData = req.body;
-console.log(postData);
     mysql.pool.query("INSERT INTO meal(`name`) VALUES (?) ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id)",[postData.menu_meal], function(err, result,next){
          if(err){
          console.log("Error Adding to meal type table" + JSON.stringify(postData));
          return;
         }
-		console.log(postData);
-   		postData.menu_mealString = postData.menu_meal;//Preserves string name from user input
-	    postData.menu_meal = result.insertId; // Sets menu_meal to LAST_INSERT_ID for numeric input in to database
-		console.log(postData);
+
+      postData.menu_mealString = postData.menu_meal;//Preserves string name from user input
+      postData.menu_meal = result.insertId; // Sets menu_meal to LAST_INSERT_ID for numeric input in to database
         mysql.pool.query("INSERT INTO menu(`restaurant_name`,`menu_meal`) VALUES (?,?)", [postData.restaurant_name, postData.menu_meal], function(err, result,next){
             if(err){
              console.log("Error Adding to menu table" + JSON.stringify(postData));
              return;
             }
           postData.id = result.insertId;//Need to get ID from last insert
-          console.log(JSON.stringify(postData));
           res.send(postData);
         });
     });
@@ -67,13 +64,11 @@ console.log(postData);
 
 app.get('/deleteMenu/:id',function(req,res,next){
   var context = {};
-  console.log(JSON.stringify(req.params));
   mysql.pool.query("DELETE FROM menu WHERE id=?", [req.params.id], function(err, result){
     if(err){
       next(err);
       return;
     }
-
     context.results;
     res.send(context);
   });
@@ -122,7 +117,9 @@ app.get('/additems',function(req,res){
 
 app.get('/getItemDB',function(req,res,next){
   var context = {};
-  mysql.pool.query('SELECT * FROM item', function(err, rows, fields){
+  sql = "SELECT i.id, i.name, i.price, i.description, m.name AS item_meal, pi.name AS primary_ingredient FROM item i INNER JOIN meal m ON i.item_meal = m.id INNER JOIN primary_ingredient pi ON i.primary_ingredient = pi.id;"
+ // mysql.pool.query('SELECT * FROM item', function(err, rows, fields){
+  mysql.pool.query(sql, function(err, rows, fields){
     if(err){
       next(err);
       return;
@@ -135,22 +132,18 @@ app.get('/getItemDB',function(req,res,next){
 app.post('/insertitem', function(req,res){
 var context = {};
 var postData = req.body;
-console.log(postData);
 mysql.pool.query("INSERT INTO meal(`name`) VALUES (?) ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id)",[postData.item_meal], function(err, result,next){
          if(err){
          console.log("Error Adding to item meal type table" + JSON.stringify(postData));
          return;
         } 
-		console.log(postData);
         postData.item_meal = result.insertId; // Sets itemu_meal to LAST_INSET_ID
-		console.log(postData);
 		mysql.pool.query("INSERT INTO item(`name`,`description`,`price`,`item_meal`,`primary_ingredient`) VALUES (?,?,?,?,?)", [postData.name, postData.description, postData.price, postData.item_meal, postData.primary_ingredient], function(err, result,next){
             if(err){
              console.log("Error Adding to item table" + JSON.stringify(postData));
              return;
             }
           postData.id = result.insertId;//Need to get ID from last insert
-          console.log(JSON.stringify(postData));
           res.send(postData);
         });
     });
@@ -189,29 +182,69 @@ app.get('/additemstomenu',function(req,res){
         function complete(){
             callbackCount++;
             if(callbackCount >= 1){
-				res.render('additemstomenu', context);
+        res.render('additemstomenu', context);
             }
-		};
+    };
 });
 
-app.get('/getMenuItems/:id',function(req,res,next){
+app.get('/getMenuItems/:id',function(req,res){
   var context = {};
-  sql = "SELECT name, price, description, item_meal FROM menu_items mi INNER JOIN menu ON mi.mid = menu.id INNER JOIN item ON mi.iid = item.id WHERE mi.mid = ?";
+  sql1 = "SELECT item.id, item.name, item.price, item.description, primary_ingredient.name AS primary_ingredient, meal.name AS item_meal FROM menu_items mi INNER JOIN menu ON mi.mid = menu.id INNER JOIN item ON mi.iid = item.id INNER JOIN meal ON item.item_meal = meal.id INNER JOIN primary_ingredient ON item.primary_ingredient = primary_ingredient.id WHERE mi.mid =?;";
   var inserts = [req.params.id];
-
-  mysql.pool.query(sql, inserts, function(error, results, fields){
+  mysql.pool.query(sql1, inserts, function(error, results, fields){
     if(error){
         res.write(JSON.stringify(error));
         res.end()
     }
-   context = results;
-   console.log("Got id in back in = " + req.params.id + " context = " + JSON.stringify(context));
+   context.menuItems = results;
+    sql2 = "SELECT i.id, i.name, i.price, i.description, m.name AS item_meal, pi.name AS primary_ingredient FROM item i INNER JOIN meal m ON i.item_meal = m.id INNER JOIN primary_ingredient pi ON i.primary_ingredient = pi.id;"
+    mysql.pool.query(sql2, function(err, results2, fields){
+    if(err){
+    next(err);
+    return;
+    }
+   context.allItems = results2;
     res.send(context);
+    });
   });
 });
 
-app.get('/viewdb',function(req,res){
-  res.render('viewdb');
+app.post('/addToMenu', function(req,res){
+  var context = {itemToAdd: null, affectedRows: null};
+  var postData = req.body;
+  sql = "INSERT IGNORE INTO menu_items(mid,iid)VALUES(?,?);"
+  var inserts = [postData.menu_id, postData.item_id];
+  mysql.pool.query(sql, inserts, function(err, results, fields){
+      if(err){
+        next(err);
+        return;
+      }else if(results.affectedRows == 0){
+       context.affectedRows = results.affectedRows;
+        res.send(context);
+      } else{
+        mysql.pool.query('SELECT * FROM item WHERE item.id = ?', [postData.item_id], function(err, results2, fields){
+          if(err){
+            next(err);
+            return;
+          }
+          context.itemToAdd = results2;
+          res.send(context);
+        });
+      }//end of ifelseif
+  });//end of INSERT
+});
+
+app.post('/removeItemFromMenu', function(req,res){
+    var context = {};
+    var postData = req.body;
+    mysql.pool.query("DELETE FROM menu_items WHERE (`mid` = ?) and (`iid` = ?);", [postData.menu_id,postData.item_id], function(err, result){
+    if(err){
+      next(err);
+      return;
+    }
+    context.results;
+    res.send(context);
+  });
 });
 
 app.get('/',function(req,res){

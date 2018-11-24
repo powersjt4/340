@@ -38,15 +38,11 @@ function getItemDB(){
 		data.primary_ingredient = document.getElementById('pi_frm').value;
 		
 		req.open('POST','/insertItem', true);
-
-		console.log("Post Data: " + JSON.stringify(data)); 
-		
    		req.setRequestHeader('Content-Type', 'application/json');
 		req.addEventListener('load',function(){
 			if(req.status >= 200 && req.status<400){
 				var response = JSON.parse(req.responseText);
 				if(response){
-					console.log("response " + JSON.stringify(response));
 					addToList(response);
 				}
 			}else{	

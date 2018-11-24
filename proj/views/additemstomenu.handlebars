@@ -1,26 +1,30 @@
-<div id = "about_box"> 
+<div id = "addItemsToMenuMain"> 
 	<h2>Add items to menu</h2>
 	<p>
 		You can add items to your menus here.
 	</p>
-<div>
-<h3> Select Restaurant Menu</h3>
-    <form id="restaurantSelect" method="get">
-    Restaurant: <select name='menu_id' id="menuSelectDropdown">
-        {{#each restaurants}}
-          <option value='{{id}}'>{{id}}{{restaurant_name}} - {{meal_name}}</option>
-        {{/each}}
-    </select>
-    <br>
-    <input type="submit" id ="restaurantMenuSelect" value="Submit">
-    </form>
-</div>
+    <div>
+    <h3> Select Restaurant Menu</h3>
+        <form id="restaurantSelect" method="get">
+        Restaurant: <select name='menu_id' id="menuSelectDropdown">
+            {{#each restaurants}}
+              <option value='{{id}}'>{{restaurant_name}} - {{meal_name}}</option>
+            {{/each}}
+        </select>
+        <br>
+        <input type="submit" id ="restaurantMenuSelect" value="Submit">
+        </form>
+    </div>
 
-<h1>Item Results:</h1>
-<div id = "newItems">
-
-</table>
-</div>
-
+    <div id = "menuItemsDisplay">
+    <div id = "itemsHeader">
+    <h3>Menu Results:</h3>
+        <div id = "itemsOnMenu">
+        </div>
+    </div>
+        <div id = "allItems">
+            <h3>Items Results:</h3>
+        </div>
+    </div>
 </div>
 <script src="/js/addItemsToMenu.js"></script>

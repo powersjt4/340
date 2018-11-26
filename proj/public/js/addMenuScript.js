@@ -84,7 +84,7 @@ function addToList(newMenu){
 		row.appendChild(editCell);
 		document.getElementById("table").appendChild(row);
 		delBtn.addEventListener("click", deleteMenu); 
-//		editBtn.addEventListener("click",editItem); 
+		editBtn.addEventListener("click",editItem); 
 }
 
 
@@ -110,24 +110,24 @@ function deleteMenu(){
 function editItem(){
 		var id = this.id;
 		var req = new XMLHttpRequest();
-		req.open('GET','/select?id='+this.id, true);
+		req.open('GET','/selectMenu?id='+id, true);
 		req.addEventListener('load',function(){
 			if(req.status >= 200 && req.status<400){
 				var response = JSON.parse(req.responseText);	
-				response[0].date = response[0].date.slice(0, -14);
-				document.getElementById("rest_frm").value = response[0].name;
-				document.getElementById("menumt_frm").value = response[0].reps;
+				console.log("Update = " + JSON.stringify(response));
+				document.getElementById("rest_frm").value = response[0].restaurant_name;
+				document.getElementById("menumt_frm").value = response[0].menu_meal;
 
 					document.getElementById("submitMenu").style.display="none";
 					document.getElementById("editMenu").style.display = "block";	
 					document.getElementById('editMenu').addEventListener('click',function(event){
+
 						var req = new XMLHttpRequest();
-						var data = {rName: null, mealType: null};
-						data.rName= document.getElementById('rest_frm').value;
-						data.mealType = document.getElementById('menumt_frm').value;
+						var data = {restaurant_name: null, menu_meal: null};
+						data.restaurant_name= document.getElementById('rest_frm').value;
+						data.menu_meal = document.getElementById('menumt_frm').value;
 						data.id = id;
-							if(data != "")
-							req.open('POST','/updateMenu', true);
+						req.open('POST','/updateMenu', true);
    						req.setRequestHeader('Content-Type', 'application/json');
 						req.addEventListener('load',function(){
 						if(req.status >= 200 && req.status<400){
@@ -141,6 +141,8 @@ function editItem(){
 		}else{	
 			console.log("Error in network request: " + request.statusText); 
 		}});//end of ael(load)
+
 		req.send();
 
-}
+}//End of editItem
+

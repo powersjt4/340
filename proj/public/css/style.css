@@ -93,4 +93,10 @@ footer span a img {
     margin: 0px 15px;
 }
 
+.hide {
+   display: none;
+}
 
+.visible{
+   display: none;
+}

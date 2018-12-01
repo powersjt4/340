@@ -54,7 +54,6 @@ function getMenuDB(){
 * Also implemented as a OL below
 */
 function addToList(newMenu){
-		console.log("newMenu = " + JSON.stringify(newMenu));
 
 		var row = document.createElement('tr');
 		nameCell = document.createElement('td');

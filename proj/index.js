@@ -30,7 +30,6 @@ app.get('/addmenus',function(req,res){
         return;
       }
       context.mealResults = mealResults;
-      console.log(JSON.stringify(context));
       res.render('addmenus',context);
     });
 });
@@ -43,7 +42,6 @@ app.get('/getMenuDB',function(req,res,next){
       return;
     }
     context.menuResults = menuResults;
-    console.log(JSON.stringify(context));
     res.send(context);
   });
 });
@@ -106,7 +104,6 @@ function updateMenu(res, mysql, postData, context, complete){
       res.write(JSON.stringify(error));
       res.end();
     }
-    console.log("results in selectMealByName" + JSON.stringify(results));
     context.selectedMeal = results;
     complete();
   });
@@ -117,17 +114,14 @@ app.post('/updateMenu', function(req,res,next){
   var postData = req.body;
   var callbackCount = 0;
   var context = {};
-  console.log("/updateMenu = "+JSON.stringify(postData));//{"restaurant_name":"Dots Diner","menu_meal":"Dinner","id":"5"
    updateMenu(res, mysql, postData, context,complete);
        function complete(){
             callbackCount++;
             if(callbackCount >= 1){
-                console.log("IN complete"+JSON.stringify(context));
                 res.send(context);
             }
       }
 });
-
 
 /*///ITEMS///*/
 app.get('/additems',function(req,res){

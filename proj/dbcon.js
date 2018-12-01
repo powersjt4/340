@@ -1,4 +1,4 @@
-var mysql = require('mysql');
+/*var mysql = require('mysql');
 var pool = mysql.createPool({
   connectionLimit : 10,
   host            : 'localhost',
@@ -8,8 +8,8 @@ var pool = mysql.createPool({
 });
 
 module.exports.pool = pool;
-
-/*var mysql = require('mysql');
+*/
+var mysql = require('mysql');
 var pool = mysql.createPool({
   connectionLimit : 10,
   host            : 'classmysql.engr.oregonstate.edu',
@@ -19,4 +19,4 @@ var pool = mysql.createPool({
 });
 
 module.exports.pool = pool;
-*/
+

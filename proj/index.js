@@ -87,7 +87,7 @@ app.get('/deleteMenu/:id',function(req,res,next){
 
 app.get('/selectMenu',function(req,res,next){
   var context = {};
-  sql = "SELECT menu.id, menu.restaurant_name, meal.name AS menu_meal FROM menu INNER JOIN meal ON menu.menu_meal = meal.id WHERE menu.id=?";
+  sql = "SELECT menu.id, menu.restaurant_name, meal.name AS menu_meal, meal.id AS meal_id FROM menu INNER JOIN meal ON menu.menu_meal = meal.id WHERE menu.id=?";
 //  mysql.pool.query("SELECT * FROM menu WHERE id=?", [req.query.id], function(err, result){
   mysql.pool.query(sql,[req.query.id], function(err, result){
      if(err){
@@ -99,20 +99,9 @@ app.get('/selectMenu',function(req,res,next){
   });
 });
 
-function selectMenuByID(res, mysql, postData, context, complete){
-  mysql.pool.query("SELECT * FROM menu WHERE id=?", [postData.id], function(error, results){
-    if(error){
-      res.write(JSON.stringify(error));
-      res.end();
-    }
-    context.selectMenu = results[0];
-     console.log("Context in function"+JSON.stringify(context));
-     complete();
-  });
-}
 
-function selectMealByName(res, mysql, postData, context, complete){
-  mysql.pool.query("SELECT * FROM meal WHERE name=?", [postData.menu_meal], function(error, results){
+function updateMenu(res, mysql, postData, context, complete){
+  mysql.pool.query("UPDATE menu SET  restaurant_name = ? , menu_meal = ? WHERE id = ?;", [postData.restaurant_name, postData.menu_meal, postData.id], function(error, results){
     if(error){
       res.write(JSON.stringify(error));
       res.end();
@@ -123,56 +112,19 @@ function selectMealByName(res, mysql, postData, context, complete){
   });
 }
 
-function updateMenuMeal(res, mysql, postData, context){
-mysql.pool.query("UPDATE meal SET name=? WHERE id = ?",[postData.menu_meal, context.curVals.menu_meal], function(error, results){
-    if(error){
-      res.write(JSON.stringify(error));
-      res.end();
-    }
-    console.log("Results from update meal "+JSON.stringify(results));
-    context.menuMealUpdate = results;
-  });
-}
-
-function updateMenuName(res, mysql, postData, context, complete){
-mysql.pool.query("UPDATE menu SET restaurant_name=? WHERE id = ?",[postData.restaurant_name, postData.id], function(error, results){
-    if(error){
-      res.write(JSON.stringify(error));
-      res.end();
-    }
-    console.log("Results from update menuName "+JSON.stringify(results));
-    context.menuNameUpdate = results;
-    complete();
-  });
-}
 
 app.post('/updateMenu', function(req,res,next){
   var postData = req.body;
   var callbackCount = 0;
   var context = {};
   console.log("/updateMenu = "+JSON.stringify(postData));//{"restaurant_name":"Dots Diner","menu_meal":"Dinner","id":"5"
-// Select all the different menu and meal items
-  selectMenuByID(res, mysql, postData, context, complete);
-  selectMealByName(res, mysql, postData, context, complete);
-  //updateMenuName(res, mysql, postData, context, complete);
-  //updateMenuMeal(res, mysql, postData, context);
+   updateMenu(res, mysql, postData, context,complete);
        function complete(){
             callbackCount++;
-            if(callbackCount >= 2){
+            if(callbackCount >= 1){
                 console.log("IN complete"+JSON.stringify(context));
             }
       }
-//  if(result.length == 1){
-/*
-    mysql.pool.query("UPDATE menu SET restaurant_name=?, reps =?, weight=?, date=?,lbs=? WHERE id=? ",
-        [postData.rName || curVals.name, postData.reps || curVals.reps, postData.weight || curVals.weight,postData.date ||curVals.date, postData.lbs || curVals.lbs, postData.id],
-        function(err, result){
-        if(err){
-          return;
-        }
-        results = "Updated " + result.changedRows + " rows.";
-        res.send(results);
-      });//end of UPDATE*/
 });
 
 
@@ -184,7 +136,6 @@ app.get('/additems',function(req,res){
 app.get('/getItemDB',function(req,res,next){
   var context = {};
   sql = "SELECT i.id, i.name, i.price, i.description, m.name AS item_meal, pi.name AS primary_ingredient FROM item i INNER JOIN meal m ON i.item_meal = m.id INNER JOIN primary_ingredient pi ON i.primary_ingredient = pi.id;"
- // mysql.pool.query('SELECT * FROM item', function(err, rows, fields){
   mysql.pool.query(sql, function(err, rows, fields){
     if(err){
       next(err);

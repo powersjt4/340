@@ -118,7 +118,7 @@ function editItem(){
 				var response = JSON.parse(req.responseText);	
 				console.log("Update = " + JSON.stringify(response));
 				document.getElementById("rest_frm").value = response[0].restaurant_name;
-				document.getElementById("menumt_frm").value = response[0].menu_meal;
+				document.getElementById("menumt_frm").value = response[0].meal_id;
 
 					document.getElementById("submitMenu").style.display="none";
 					document.getElementById("editMenu").style.display = "block";	

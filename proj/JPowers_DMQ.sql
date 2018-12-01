@@ -31,12 +31,16 @@ UPDATE item SET name = :name_frm, price = :price_frm, description =:desc_frm, it
 -- Propogate menu table display
 SELECT name, restaurant_name, type FROM menu
 
-INSERT INTO menu (name, meal_type) VALUES (:menu_name_frm)
+SELECT menu.id, menu.restaurant_name, meal.name AS menu_meal FROM menu INNER JOIN meal ON menu.menu_meal = meal.id
 
-DELETE FROM menu WHERE id = :menu_ID_selected_deleted_menu
+INSERT INTO meal(`name`) VALUES (:KeyFromFrontEnd) ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id)
+
+DELETE FROM menu WHERE id= :menu_ID_selected_deleted_menu
 
 SELECT restaurant_name, item_meal FROM menus WHERE id = :menu_id_from_table --Populate edit form
-UPDATE menus SET restaruant_name = :name_frm, price = :price_frm, description =:desc_frm, item_meal = :item_meal_frm  WHERE id = :id_item_from_table
+
+UPDATE meal SET name=? WHERE id = ? --Need to update individually 
+UPDATE menu SET restaurant_name=? WHERE id = ?
 
 /*Add to Add item to Menu Page*/
 --Propogate menu select dropdown

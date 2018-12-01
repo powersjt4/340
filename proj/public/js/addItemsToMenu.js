@@ -5,6 +5,7 @@ document.getElementById('restaurantMenuSelect').addEventListener('click',functio
 		var data = {};
 		if (document.contains(document.getElementById("itemsOnMenu"))) {
             document.getElementById("itemsOnMenu").remove();
+            document.getElementById("allItems").remove();
 		}
 		data.id = document.getElementById('menuSelectDropdown').value;
 		menuSelectedID = data.id;
@@ -17,6 +18,7 @@ document.getElementById('restaurantMenuSelect').addEventListener('click',functio
 					response.menuItems.forEach(function(element, index, response){
 						addToTable(element,"itemsOnMenu");
 					});//eoforeach
+					createTable("allItems", "allItemsHeader")
 					response.allItems.forEach(function(element, index, response){
 						addToTable(element,"allItems");
 					});//eoforeach 
@@ -28,8 +30,6 @@ document.getElementById('restaurantMenuSelect').addEventListener('click',functio
 		req.send();
 		event.preventDefault();
 });
-
-
 
 function createTable(tableName, appendWhere){
 	var table = document.createElement('table');

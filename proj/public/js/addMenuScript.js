@@ -10,8 +10,7 @@ function getMenuDB(){
 		req.addEventListener('load',function(){
 			if(req.status >= 200 && req.status<400){
 				var response = JSON.parse(req.responseText);
-				response.forEach(function(element, index, response){
-					//	element.date = element.date.slice(0, -14);
+				response.menuResults.forEach(function(element, index, response){
 						addToList(element);
 				});//eoforeach
 			}else{	
@@ -40,7 +39,8 @@ function getMenuDB(){
 			if(req.status >= 200 && req.status<400){
 				var response = JSON.parse(req.responseText);
 				if(response){
-					addToList(response);
+					console.log("selectResults = " + JSON.stringify(response.selectResults));
+					addToList(response.selectResults[0]);
 				}
 			}else{	
 				console.log("Error in network request: " + req.statusText); 
@@ -54,6 +54,8 @@ function getMenuDB(){
 * Also implemented as a OL below
 */
 function addToList(newMenu){
+		console.log("newMenu = " + JSON.stringify(newMenu));
+
 		var row = document.createElement('tr');
 		nameCell = document.createElement('td');
 		nameCell.innerHTML = newMenu.restaurant_name; 

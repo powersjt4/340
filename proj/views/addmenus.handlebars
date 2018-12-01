@@ -11,8 +11,11 @@
 		 	<input type="text" name = "restaurant" id = "rest_frm" value = ""><br>
 		 	
 		 	<label>Meal Type: </label>
-		 	<input type="text" name = "mealtype" min = 0 id = "menumt_frm" value = ""><br>		 	
-	    
+            <select name='meal_type' id="menumt_frm">
+            {{#each mealResults}}
+              <option value='{{id}}'>{{name}}</option>
+            {{/each}}
+        </select>
 	    <input type="submit" id ="submitMenu" value= "Submit Menu" />
 	  <!--  <input type="submit" id ="editMenu" value = "Edit Menu" /> -->
 	   <input type="submit" id ="editMenu" Value = "Edit Menu" style="display: none;" />
@@ -34,8 +37,7 @@
 		</div>
 		</main>
 		</div>
-
-		</div>
+	</div>
 </div>
 <script src="/js/addMenuScript.js"></script>
 

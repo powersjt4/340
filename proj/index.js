@@ -16,51 +16,62 @@ if(process.argv[2]=== undefined){
 } else {
   app.set('port', process.argv[2]);
 }
-/*Navigation*/
+/*Home*/
 app.get('/',function(req,res){
   res.render('home');
 });
 
 /*///MENUS///*/
 app.get('/addmenus',function(req,res){
-  res.render('addmenus');
+    var context = {};
+    mysql.pool.query('SELECT * FROM meal', function(err, mealResults, fields){
+      if(err){
+        next(err);
+        return;
+      }
+      context.mealResults = mealResults;
+      console.log(JSON.stringify(context));
+      res.render('addmenus',context);
+    });
 });
 
 app.get('/getMenuDB',function(req,res,next){
   var context = {};
-  mysql.pool.query('SELECT menu.id, menu.restaurant_name, meal.name AS menu_meal FROM menu INNER JOIN meal ON menu.menu_meal = meal.id', function(err, rows, fields){
+  mysql.pool.query('SELECT menu.id, menu.restaurant_name, meal.name AS menu_meal FROM menu INNER JOIN meal ON menu.menu_meal = meal.id', function(err, menuResults, fields){
     if(err){
       next(err);
       return;
     }
-    context = rows;
+    context.menuResults = menuResults;
+    console.log(JSON.stringify(context));
     res.send(context);
   });
 });
+
 /*Insert new menu checks to see if meal name alreadty exists if it doesn't it will add the name to the meal database,
  *if not it will return the if of the unique meal id. menu_mealString is the string name entered by the user(meal.name)
  *and menu meal is the id of the meal for entry into menu. 
  */
 app.post('/insertmenu', function(req,res){
+  var context = {};
 var postData = req.body;
-    mysql.pool.query("INSERT INTO meal(`name`) VALUES (?) ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id)",[postData.menu_meal], function(err, result,next){
-         if(err){
-         console.log("Error Adding to meal type table" + JSON.stringify(postData));
-         return;
-        }
-
-      postData.menu_mealString = postData.menu_meal;//Preserves string name from user input
-      postData.menu_meal = result.insertId; // Sets menu_meal to LAST_INSERT_ID for numeric input in to database
-        mysql.pool.query("INSERT INTO menu(`restaurant_name`,`menu_meal`) VALUES (?,?)", [postData.restaurant_name, postData.menu_meal], function(err, result,next){
-            if(err){
-             console.log("Error Adding to menu table" + JSON.stringify(postData));
-             return;
-            }
-          postData.id = result.insertId;//Need to get ID from last insert
-          res.send(postData);
-        });
+  mysql.pool.query("INSERT INTO menu(`restaurant_name`,`menu_meal`) VALUES (?,?)", [postData.restaurant_name, postData.menu_meal], function(err, insertResult,next){
+      if(err){
+       console.log("Error Adding to menu table" + JSON.stringify(postData));
+       return;
+      }
+    context.insertResult = insertResult;//Need to get ID from last insert
+    sql = "SELECT menu.id, menu.restaurant_name, meal.name AS menu_meal FROM menu INNER JOIN meal ON menu.menu_meal = meal.id WHERE menu.restaurant_name=?"; 
+    mysql.pool.query(sql,[postData.restaurant_name], function(err, selectResults){
+       if(err){
+        next(err);
+        return;
+      }
+    context.selectResults = selectResults;
+    res.send(context);
     });
-});///insertmenu
+  });
+});
 
 app.get('/deleteMenu/:id',function(req,res,next){
   var context = {};
@@ -151,9 +162,6 @@ app.post('/updateMenu', function(req,res,next){
                 console.log("IN complete"+JSON.stringify(context));
             }
       }
-
-
-
 //  if(result.length == 1){
 /*
     mysql.pool.query("UPDATE menu SET restaurant_name=?, reps =?, weight=?, date=?,lbs=? WHERE id=? ",
@@ -280,7 +288,9 @@ app.post('/addToMenu', function(req,res){
        context.affectedRows = results.affectedRows;
         res.send(context);
       } else{
-        mysql.pool.query('SELECT * FROM item WHERE item.id = ?', [postData.item_id], function(err, results2, fields){
+        sql = "SELECT i.id, i.name, i.price, i.description, m.name AS item_meal, pi.name AS primary_ingredient FROM item i INNER JOIN meal m ON i.item_meal = m.id INNER JOIN primary_ingredient pi ON i.primary_ingredient = pi.id WHERE i.id = ?;";
+        mysql.pool.query(sql, [postData.item_id], function(err, results2, fields){
+//        mysql.pool.query('SELECT * FROM item WHERE item.id = ?', [postData.item_id], function(err, results2, fields){
           if(err){
             next(err);
             return;

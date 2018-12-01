@@ -87,16 +87,8 @@ function addToList(newItem){
 		delCell.appendChild(delBtn);
 		row.appendChild(delCell);
 		
-		editCell = document.createElement('td');
-		var editBtn = document.createElement("BUTTON");     
-		var editTxt = document.createTextNode("Edit");       
-		editBtn.id =newItem.id;
-		editBtn.appendChild(editTxt); 
-		editCell.appendChild(editBtn);
-		row.appendChild(editCell);
 		document.getElementById("table").appendChild(row);
 		delBtn.addEventListener("click", deleteItem); 
-//		editBtn.addEventListener("click",editItem); 
 }
 
 /*

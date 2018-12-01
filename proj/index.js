@@ -123,6 +123,7 @@ app.post('/updateMenu', function(req,res,next){
             callbackCount++;
             if(callbackCount >= 1){
                 console.log("IN complete"+JSON.stringify(context));
+                res.send(context);
             }
       }
 });

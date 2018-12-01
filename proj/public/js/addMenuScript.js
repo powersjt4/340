@@ -116,7 +116,6 @@ function editItem(){
 		req.addEventListener('load',function(){
 			if(req.status >= 200 && req.status<400){
 				var response = JSON.parse(req.responseText);	
-				console.log("Update = " + JSON.stringify(response));
 				document.getElementById("rest_frm").value = response[0].restaurant_name;
 				document.getElementById("menumt_frm").value = response[0].meal_id;
 
@@ -133,6 +132,7 @@ function editItem(){
    						req.setRequestHeader('Content-Type', 'application/json');
 						req.addEventListener('load',function(){
 						if(req.status >= 200 && req.status<400){
+							console.log("SUCCESSFUL UPDATE");
 							location.reload();
 						}else{	
 							console.log("Error in network request: " + req.statusText); 
@@ -143,8 +143,6 @@ function editItem(){
 		}else{	
 			console.log("Error in network request: " + request.statusText); 
 		}});//end of ael(load)
-
 		req.send();
-
 }//End of editItem
 

@@ -34,7 +34,7 @@ module.exports = function(){
         });
     });
 
-        /* Route to delete a meal, simply returns a 202 upon success. Ajax will handle this. */
+        /* Route to delete a meal, simply returns a 202 upon success.  */
 
     router.delete('/:id', function(req, res){
         var mysql = req.app.get('mysql');

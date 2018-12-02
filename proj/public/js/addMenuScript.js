@@ -54,8 +54,8 @@ function getMenuDB(){
 * Also implemented as a OL below
 */
 function addToList(newMenu){
-
 		var row = document.createElement('tr');
+		row.id = "tr"+newMenu.id;
 		nameCell = document.createElement('td');
 		nameCell.innerHTML = newMenu.restaurant_name; 
 		row.appendChild(nameCell);
@@ -78,7 +78,7 @@ function addToList(newMenu){
 		
 		editCell = document.createElement('td');
 		var editBtn = document.createElement("BUTTON");     
-		var editTxt = document.createTextNode("Edit");       
+		var editTxt = document.createTextNode("Update");       
 		editBtn.id =newMenu.id;
 		editBtn.appendChild(editTxt); 
 		editCell.appendChild(editBtn);
@@ -94,15 +94,25 @@ function addToList(newMenu){
 *  after deleting it from the database.
 */
 function deleteMenu(){
-	document.getElementById("table").deleteRow(this.parentNode.parentNode.rowIndex);
+	var id = this.id;
+	console.log("IN DELETE menu" + id);
 		var req = new XMLHttpRequest();
-		req.open('GET','/deleteMenu/'+this.id, true);
+		req.open('DELETE','/deleteMenu/'+id, true);
+		req.addEventListener('load',function(){
 		if(req.status >= 200 && req.status<400){
-				document.getElementById("table").deleteRow(this.parentNode.parentNode.rowIndex);
-		}
-
+			deleteRow("tr"+id);
+		}else{
+			alert("Error Deleting element "+id +" Try deleting all references");
+			}});//end of ael(load)
 		req.send();
 }
+//Shamelessly lifted from https://stackoverflow.com/questions/4967223/delete-a-row-from-a-table-by-id
+function deleteRow(rowid)  
+{   
+    var row = document.getElementById(rowid);
+    row.parentNode.removeChild(row);
+}
+
 
 /*
 * Probably not the cleanest implement of the update

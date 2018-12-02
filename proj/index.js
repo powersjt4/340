@@ -78,15 +78,19 @@ var postData = req.body;
   });
 });
 
-app.get('/deleteMenu/:id',function(req,res,next){
+app.delete('/deleteMenu/:id',function(req,res,next){
   var context = {};
-  mysql.pool.query("DELETE FROM menu WHERE id=?", [req.params.id], function(err, result){
-    if(err){
-      next(err);
-      return;
+  console.log("IN delete item express");
+  mysql.pool.query("DELETE FROM menu WHERE id=?", [req.params.id], function(error, result){
+    if(error){
+        console.log("Error in delete menu");
+        console.log(JSON.stringify(error));
+        res.status(400);
+        res.end();
+    }else{
+        console.log("Success in delete menu");
+        res.status(202).end();
     }
-    context.results;
-    res.send(context);
   });
 });
 
@@ -191,13 +195,16 @@ mysql.pool.query(sql, inserts, function(err, insertResult){
 app.delete('/deleteItem/:id',function(req,res,next){
   var context = {};
   console.log("IN delete item express");
-  mysql.pool.query("DELETE FROM item WHERE id=?", [req.params.id], function(err, result){
-    if(err){
-      next(err);
-      return;
-    }
-    context.results;
-    res.send(context);
+  mysql.pool.query("DELETE FROM item WHERE id=?", [req.params.id], function(error, result){
+ if(error){
+     console.log("Error in delete item");
+     console.log(JSON.stringify(error));
+     res.status(400);
+     res.end();
+ }else{
+     console.log("Success in delete item");
+     res.status(202).end();
+ }
   });
 });
 

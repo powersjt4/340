@@ -1,3 +1,4 @@
+///*
 var mysql = require('mysql');
 var pool = mysql.createPool({
   connectionLimit : 10,
@@ -6,7 +7,7 @@ var pool = mysql.createPool({
   password        : 'asdf',
   database        : 'cs340_powersj2'
 });
-
+//*/
 module.exports.pool = pool;
 /*
 var mysql = require('mysql');

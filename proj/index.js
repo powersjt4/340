@@ -1,11 +1,12 @@
 var express = require('express');
 var mysql = require('./dbcon.js');
-
+var path = require('path');
 var app = express();
 var handlebars = require('express-handlebars').create({defaultLayout:'main'});
 var bodyParser = require('body-parser');
 var fs = require('fs');
-
+var favicon = require('serve-favicon');
+app.use(favicon(path.join(__dirname,'public','images','favicon.ico')));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.engine('handlebars', handlebars.engine);
@@ -187,8 +188,9 @@ mysql.pool.query(sql, inserts, function(err, insertResult){
     });
 });
 
-app.get('/deleteItem/:id',function(req,res,next){
+app.delete('/deleteItem/:id',function(req,res,next){
   var context = {};
+  console.log("IN delete item express");
   mysql.pool.query("DELETE FROM item WHERE id=?", [req.params.id], function(err, result){
     if(err){
       next(err);

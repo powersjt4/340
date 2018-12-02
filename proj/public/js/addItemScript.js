@@ -58,6 +58,7 @@ function getItemDB(){
 function addToList(newItem){
 		console.log("newItem = " + JSON.stringify(newItem));
 		var row = document.createElement('tr');
+		row.id = "tr"+newItem.id;
 		nameCell = document.createElement('td');
 		nameCell.innerHTML = newItem.name; 
 		row.appendChild(nameCell);
@@ -90,18 +91,22 @@ function addToList(newItem){
 		delBtn.addEventListener("click", deleteItem); 
 }
 
-/*
-* Deletes row from the table
-*  after deleting it from the database.
-*/
 function deleteItem(){
-	document.getElementById("table").deleteRow(this.parentNode.parentNode.rowIndex);
+	var id = this.id;
+	console.log("IN DELETE item" + id);
 		var req = new XMLHttpRequest();
-		req.open('GET','/deleteItem/'+this.id, true);
+		req.open('DELETE','/deleteItem/'+id, true);
+		req.addEventListener('load',function(){
 		if(req.status >= 200 && req.status<400){
-				document.getElementById("table").deleteRow(this.parentNode.parentNode.rowIndex);
-		}
-
+			deleteRow("tr"+id);
+		}else{
+			alert("Error Deleting element "+id +" Try deleting all references");
+			}});//end of ael(load)
 		req.send();
 }
-
+//Shamelessly lifted from https://stackoverflow.com/questions/4967223/delete-a-row-from-a-table-by-id
+function deleteRow(rowid)  
+{   
+    var row = document.getElementById(rowid);
+    row.parentNode.removeChild(row);
+}

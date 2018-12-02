@@ -11,15 +11,20 @@ app.use(bodyParser.json());
 app.engine('handlebars', handlebars.engine);
 app.use(express.static('public'));
 app.set('view engine', 'handlebars');
+
 if(process.argv[2]=== undefined){
   app.set('port', 4576);
 } else {
   app.set('port', process.argv[2]);
 }
+app.set('mysql', mysql);
+
 /*Home*/
 app.get('/',function(req,res){
   res.render('home');
 });
+
+app.use('/addmeals', require('./addmeals.js'));
 
 /*///MENUS///*/
 app.get('/addmenus',function(req,res){
@@ -125,7 +130,23 @@ app.post('/updateMenu', function(req,res,next){
 
 /*///ITEMS///*/
 app.get('/additems',function(req,res){
-  res.render('additems');
+    var context = {};
+    mysql.pool.query('SELECT * FROM meal', function(err, mealResults, fields){
+      if(err){
+        next(err);
+        return;
+      }
+      context.mealResults = mealResults;
+      mysql.pool.query('SELECT * FROM primary_ingredient', function(err, piResults, fields){
+        if(err){
+          next(err);
+          return;
+        }
+        context.piResults = piResults;
+        console.log("Context add items" + JSON.stringify(context));
+        res.render('additems',context);
+      });
+    });
 });
 
 app.get('/getItemDB',function(req,res,next){
@@ -144,19 +165,23 @@ app.get('/getItemDB',function(req,res,next){
 app.post('/insertitem', function(req,res){
 var context = {};
 var postData = req.body;
-mysql.pool.query("INSERT INTO meal(`name`) VALUES (?) ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id)",[postData.item_meal], function(err, result,next){
+console.log("postData in /insertitem"+JSON.stringify(postData))
+sql = "INSERT INTO item(`name`,`description`,`price`,`item_meal`,`primary_ingredient`) VALUES (?,?,?,?,?)";
+var inserts = [postData.name, postData.description, postData.price, postData.item_meal, postData.primary_ingredient];
+mysql.pool.query(sql, inserts, function(err, insertResult){
          if(err){
-         console.log("Error Adding to item meal type table" + JSON.stringify(postData));
+         console.log("Error Adding to item into item table" + JSON.stringify(postData));
          return;
         } 
-        postData.item_meal = result.insertId; // Sets itemu_meal to LAST_INSET_ID
-		mysql.pool.query("INSERT INTO item(`name`,`description`,`price`,`item_meal`,`primary_ingredient`) VALUES (?,?,?,?,?)", [postData.name, postData.description, postData.price, postData.item_meal, postData.primary_ingredient], function(err, result,next){
+        context.insertResult = insertResult;
+        sql2 = "SELECT i.id, i.name, i.price, i.description, m.name AS item_meal, pi.name AS primary_ingredient FROM item i INNER JOIN meal m ON i.item_meal = m.id INNER JOIN primary_ingredient pi ON i.primary_ingredient = pi.id WHERE i.name = ?;"
+		mysql.pool.query(sql2, [postData.name],function(err, selectResults){
             if(err){
              console.log("Error Adding to item table" + JSON.stringify(postData));
              return;
             }
-          postData.id = result.insertId;//Need to get ID from last insert
-          res.send(postData);
+          context.selectResults = selectResults;
+          res.send(context);
         });
     });
 });

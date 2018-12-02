@@ -1,0 +1,31 @@
+<div id="about_box"> 
+	<h2>Add to meals</h2>
+	<p>
+		this page will allow you to add to the meals types. For example lunch, brunch dinner<br>
+	</p>
+		<div>
+			<h3>Add new meal:</h3>
+			<form id="addmeal" action="/addmeals" method="post">
+			    Name: <input type="text" name="name"><br>
+			    <input type="submit" value="Submit">
+			 </form>
+			<br/>
+		</div>
+<h3>Current Meal Types:</h3>
+<table>
+    <thead> 
+        <th>ID</th> 
+        <th>Meal Type</th> 
+    </thead> 
+    <tbody>
+        {{#each mealResults}} 
+        <tr id = tr{{id}}> 
+            <td>{{id}}</td> 
+            <td>{{name}}</td> 
+           <td><button onclick="deleteMeal({{id}})">Delete</button></td>
+        </tr> 
+        {{/each}} 
+    </tbody> 
+</table> 
+</div>
+<script src="/js/addMealsScript.js"></script>

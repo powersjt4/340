@@ -15,14 +15,19 @@
 		 	<input type="text" name = "desc" id = "desc_frm" value = ""><br>
 		 	
 		 	<label>Meal Type:</label>
-		 	<input type="text" name = "mealType" min = 0 id = "item_meal_frm" value = ""><br>		 	
-
+	 	    <select name='meal_type' id="item_meal_frm">
+	 	    	{{#each mealResults}}
+	 	      		<option value='{{id}}'>{{name}}</option>
+	 	    	{{/each}}
+	 		</select>
 		 	<label>Primary Ingredient:</label>
-		 	<input type="number" name = "pi" min = 0 id = "pi_frm" value = ""><br>	    
-	    
+	        <select name='pi' id="pi_frm">
+	        	{{#each piResults}}
+	          		<option value='{{id}}'>{{name}}</option>
+	        	{{/each}}
+	    	</select><br>
 		<input type="submit" id ="submitItem" Value= "Submit Item" />
-	    <input type="submit" id ="editItem" Value = "Edit Item" />
-	  <!--  <input type="submit" id ="editItem" class ="hide" Value = "Edit Item" /> -->
+
 	</form>
 
 <h1>Item Results:</h1>
@@ -44,5 +49,4 @@
 </main>
 </div>
 </div>
-
 <script src="/js/addItemScript.js"></script>

@@ -1,0 +1,31 @@
+<div id="about_box"> 
+	<h2>Add to Primary Ingredient</h2>
+	<p>
+		this page will allow you to add to the meals types. For example lunch, brunch dinner<br>
+	</p>
+		<div>
+			<h3>Add new Primary Ingredient:</h3>
+			<form id="addmeal" action="/addpi" method="post">
+			    Name: <input type="text" name="name"><br>
+			    <input type="submit" value="Submit">
+			 </form>
+			<br/>
+		</div>
+<h3>Current Primary Ingredients:</h3>
+<table>
+    <thead> 
+        <th>ID</th> 
+        <th>Primary Ingredient</th> 
+    </thead> 
+    <tbody>
+        {{#each piResults}} 
+        <tr id = tr{{id}}> 
+            <td>{{id}}</td> 
+            <td>{{name}}</td> 
+           <td><button onclick="deletepi({{id}})">Delete</button></td>
+        </tr> 
+        {{/each}} 
+    </tbody> 
+</table> 
+</div>
+<script src="/js/addPIScript.js"></script>

@@ -25,6 +25,7 @@ app.get('/',function(req,res){
 });
 
 app.use('/addmeals', require('./addmeals.js'));
+app.use('/addpi', require('./addpi.js'));
 
 /*///MENUS///*/
 app.get('/addmenus',function(req,res){

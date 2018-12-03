@@ -1,6 +1,7 @@
 /*
 	Jacob Powers
 	10/14/18
+ Data Definition Queries
 	Project Step 2 Final Version: ERD, Schema & DDQ
 */
 

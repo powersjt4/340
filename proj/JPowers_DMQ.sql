@@ -1,6 +1,6 @@
 /*
 Jacob Powers
-DMQ For Project
+DMQ Data Manipulation Queries For Project
 10/21/18
 */
 

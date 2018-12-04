@@ -47,7 +47,7 @@ SELECT i.id, i.name, i.price, i.description, m.name AS item_meal, pi.name AS pri
 INNER JOIN meal m ON i.item_meal = m.id 
 INNER JOIN primary_ingredient pi ON i.primary_ingredient = pi.id WHERE i.id = ?;
 /*Removes entry from table*/
-DELETE FROM menu_items WHERE (`mid` = ?) and (`iid` = ?);
+DELETE FROM menu_items WHERE (`mid` = :menuIDFromTable) and (`iid` = :itemIdFromTable);
 
 /*Add primary ingredient */
 SELECT * FROM primary_ingredient ORDER BY id ASC

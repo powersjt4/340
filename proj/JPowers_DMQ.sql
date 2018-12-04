@@ -35,7 +35,7 @@ SELECT item.id, item.name, item.price, item.description, primary_ingredient.name
 INNER JOIN menu ON mi.mid = menu.id INNER JOIN item ON mi.iid = item.id 
 INNER JOIN meal ON item.item_meal = meal.id 
 INNER JOIN primary_ingredient ON item.primary_ingredient = primary_ingredient.id 
-WHERE mi.mid =?;
+WHERE mi.mid = :menuItemMenuID;
 /*Gets all items for all items table*/
 SELECT i.id, i.name, i.price, i.description, m.name AS item_meal, pi.name AS primary_ingredient FROM item i 
 INNER JOIN meal m ON i.item_meal = m.id 
@@ -51,10 +51,10 @@ DELETE FROM menu_items WHERE (`mid` = ?) and (`iid` = ?);
 
 /*Add primary ingredient */
 SELECT * FROM primary_ingredient ORDER BY id ASC
-INSERT INTO primary_ingredient (name) VALUES (?)
-DELETE FROM primary_ingredient WHERE id = ?
+INSERT INTO primary_ingredient (name) VALUES (:primaryIngredientForm)
+DELETE FROM primary_ingredient WHERE id = :primaryIngredientButton
 
 /*Add meal */
 SELECT * FROM meal ORDER BY id ASC
-INSERT INTO meal (name) VALUES (?)
-DELETE FROM meal WHERE id = ?
+INSERT INTO meal (name) VALUES (:mealForm)
+DELETE FROM meal WHERE id = :mealDeleteButton
